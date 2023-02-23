@@ -46,23 +46,25 @@ class State:
         # check for horizontal lines
         for row in range(NUM_ROWS):
             for col in range(NUM_COLS - 3):
-                if self.board[row][col] == self.board[row][col + 1] == self.board[row][col + 2] == self.board[row][col + 3] != 0:
+                if self.board[row][col] == self.board[row][col + 1] == self.board[row][col + 2] == self.board[row][
+                    col + 3] != 0:
                     return self.board[row][col]
         for row in range(NUM_ROWS - 3):
             for col in range(NUM_COLS):
-                if self.board[row][col] == self.board[row + 1][col] == self.board[row + 2][col] == self.board[row + 3][col] != 0:
+                if self.board[row][col] == self.board[row + 1][col] == self.board[row + 2][col] == self.board[row + 3][
+                    col] != 0:
                     return self.board[row][col]
         for row in range(NUM_ROWS - 3):
             for col in range(NUM_COLS - 3):
-                if self.board[row][col] == self.board[row + 1][col + 1] == self.board[row + 2][col + 2] == self.board[row + 3][col + 3] != 0:
+                if self.board[row][col] == self.board[row + 1][col + 1] == self.board[row + 2][col + 2] == \
+                        self.board[row + 3][col + 3] != 0:
                     return self.board[row][col]
         for row in range(3, NUM_ROWS):
             for col in range(NUM_COLS - 3):
-                if self.board[row][col] == self.board[row - 1][col + 1] == self.board[row - 2][col + 2] == self.board[row - 3][col + 3] != 0:
+                if self.board[row][col] == self.board[row - 1][col + 1] == self.board[row - 2][col + 2] == \
+                        self.board[row - 3][col + 3] != 0:
                     return self.board[row][col]
         return -1
-
-
 
     def check_line(self, n, player, values):
         num_pieces = sum(list(map(lambda val: val == player, values)))
@@ -85,14 +87,33 @@ class State:
                                                                       self.board[row + 2][col],
                                                                       self.board[row + 3][col]]):
                     num_lines += 1
-                # Your Code Here
+                if row < NUM_ROWS - 3 and col < NUM_COLS - 3 and self.check_line(n, player, [self.board[row][col],
+                                                                                             self.board[row + 1][
+                                                                                                 col + 1],
+                                                                                             self.board[row + 2][
+                                                                                                 col + 2],
+                                                                                             self.board[row + 3][
+                                                                                                 col + 3]]):
+                    num_lines += 1
+                if row > 2 and col < NUM_COLS - 3 and self.check_line(n, player, [self.board[row][col],
+                                                                                  self.board[row - 1][col + 1],
+                                                                                  self.board[row - 2][col + 2],
+                                                                                  self.board[row - 3][col + 3]]):
+                    num_lines += 1
+
         return num_lines
 
     # c3)
     def central(self, player):
+        score = 0
+        mid_col = NUM_COLS + 1 // 2
+        for row in range(NUM_ROWS):
+            if self.board[row][mid_col - 1] == player or self.board[row][mid_col + 1] == player:
+                score += 1
+            if self.board[row][mid_col] == player:
+                score += 2
+        return score
 
-
-# Your Code Here
 
 class ConnectFourGame:
 
